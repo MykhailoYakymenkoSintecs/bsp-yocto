@@ -1,44 +1,47 @@
 [submodule "sources/poky"]
 	path = sources/poky
 	url = git://git.yoctoproject.org/poky
-	branch = dunfell
+	branch = scarthgap
 [submodule "sources/meta-openembedded"]
 	path = sources/meta-openembedded
 	url = git://git.openembedded.org/meta-openembedded
-	branch = dunfell
+	branch = scarthgap
 [submodule "sources/meta-freescale"]
 	path = sources/meta-freescale
 	url = https://git.yoctoproject.org/git/meta-freescale
-	branch = dunfell
+	branch = scarthgap
 [submodule "sources/meta-scalys"]
 	path = sources/meta-scalys
 	url = https://github.com/Scalys/meta-scalys.git
-	branch = dunfell
+	branch = scarthgap
 [submodule "sources/meta-cloud-services"]
 	path = sources/meta-cloud-services
 	url = git://git.yoctoproject.org/meta-cloud-services
-	branch = dunfell
-[submodule "sources/meta-mender"]
-	path = sources/meta-mender
-	url = https://github.com/mendersoftware/meta-mender.git
-	branch = dunfell
-[submodule "sources/meta-rust"]
-	path = sources/meta-rust
-	url = https://github.com/meta-rust/meta-rust.git
-	branch = master
+	branch = scarthgap
 [submodule "sources/meta-virtualization"]
 	path = sources/meta-virtualization
 	url = git://git.yoctoproject.org/meta-virtualization
-	branch = dunfell
+	branch = scarthgap
 [submodule "sources/meta-iotedge"]
 	path = sources/meta-iotedge
 	url = https://github.com/Azure/meta-iotedge.git
-	branch = dunfell
 [submodule "sources/meta-security"]
 	path = sources/meta-security
 	url = git://git.yoctoproject.org/meta-security
-	branch = dunfell
+	branch = scarthgap
 [submodule "sources/sources/meta-clang"]
 	path = sources/meta-clang
 	url = https://github.com/kraj/meta-clang.git
-	branch = dunfell
+	branch = scarthgap
+[submodule "sources/meta-qoriq"]
+	path = sources/meta-qoriq
+	url = https://github.com/nxp-qoriq/meta-qoriq.git
+	branch = scarthgap
+[submodule "sources/meta-arm"]
+	path = sources/meta-arm
+	url = https://git.yoctoproject.org/meta-arm
+	branch = scarthgap
+[submodule "sources/meta-freescale-distro"]
+	path = sources/meta-freescale-distro
+	url = https://github.com/Freescale/meta-freescale-distro.git
+	branch = scarthgap

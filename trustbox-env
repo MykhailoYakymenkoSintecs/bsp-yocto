@@ -1,11 +1,11 @@
 # TrustBox Yocto build environment deployment
-# Author: Lavnikevich Dmitry <dmitry.lavnikevich@edality.by>
+# Author: Lavnikevich Dmitry <dmitry.lavnikevich@sintecs.eu>
 
 
 BSP_DIR="$(pwd)"
 THIS_ENV_FILE="trustbox-env"
 OE_ENV_PATH="$BSP_DIR/sources/poky/oe-init-build-env"
-BUILD_DIR="$BSP_DIR/build"
+BUILD_DIR="$BSP_DIR/${1:-build}"
 SOURCES_DIR="$BSP_DIR/sources"
 
 LOCAL_CONF_PATH="$BUILD_DIR/conf/local.conf"
@@ -14,10 +14,10 @@ LOCAL_CONF_LIST="\
   STOPTASKS,\${DL_DIR},1G,100K \
   STOPTASKS,\${SSTATE_DIR},1G,100K \
   STOPTASKS,/tmp,100M,100K \
-  ABORT,\${TMPDIR},100M,1K \
-  ABORT,\${DL_DIR},100M,1K \
-  ABORT,\${SSTATE_DIR},100M,1K \
-  ABORT,/tmp,10M,1K \
+  HALT,\${TMPDIR},100M,1K \
+  HALT,\${DL_DIR},100M,1K \
+  HALT,\${SSTATE_DIR},100M,1K \
+  HALT,/tmp,10M,1K \
 "
 
 BBLAYERS_CONF_PATH="$BUILD_DIR/conf/bblayers.conf"
@@ -31,8 +31,11 @@ BBLAYERS_LIST="\
   meta-openembedded/meta-python \
   meta-openembedded/meta-perl \
   meta-openembedded/meta-filesystems \
+  \
+  meta-arm/meta-arm \
+  meta-arm/meta-arm-toolchain \
+  \
   meta-virtualization \
-  meta-rust \
   \
   meta-cloud-services \
   \
@@ -42,6 +45,8 @@ BBLAYERS_LIST="\
   meta-iotedge \
   \
   meta-freescale \
+  meta-freescale-distro \
+  meta-qoriq \
   \
   meta-scalys \
 "
@@ -65,11 +70,9 @@ info() {
 
 local_conf_generate() {
     cat <<EOF > "$LOCAL_CONF_PATH"
-MACHINE = "trustbox-edge-101"
-DISTRO ?= "poky"
-PACKAGE_CLASSES ?= "package_ipk"
+MACHINE ?= "trustbox-edge-101"
+DISTRO ?= "scalys"
 EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
-USER_CLASSES ?= "buildstats image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
 
 EOF
@@ -80,7 +83,7 @@ EOF
     done
     echo "\"" >> "$LOCAL_CONF_PATH"
 
-    echo "CONF_VERSION = \"1\"" >> "$LOCAL_CONF_PATH"
+    echo "CONF_VERSION = \"2\"" >> "$LOCAL_CONF_PATH"
 
 }
 
@@ -91,11 +94,13 @@ POKY_BBLAYERS_CONF_VERSION = "2"
 BBPATH = "\${TOPDIR}"
 BBFILES ?= ""
 
+BSPDIR := "\${@os.path.abspath(os.path.dirname(d.getVar('FILE', True)) + '/../..')}"
+
 BBLAYERS ?= "\\
 EOF
 
     for layer in $BBLAYERS_LIST; do
-        echo "  $SOURCES_DIR/$layer \\" >> "$BBLAYERS_CONF_PATH"
+        echo "  \${BSPDIR}/sources/$layer \\" >> "$BBLAYERS_CONF_PATH"
     done
     echo "\"" >> "$BBLAYERS_CONF_PATH"
 }
@@ -113,7 +118,7 @@ MYSHELL=$(ps -hp $$ | awk '{ print $5 }' | sed 's!.*/!!')
 unset GEN_CONF
 [ -f "$BBLAYERS_CONF_PATH" -a -f "$LOCAL_CONF_PATH" ] || GEN_CONF=y
 
-source "$OE_ENV_PATH"
+source "$OE_ENV_PATH" "$BUILD_DIR"
 
 if [ -n "$GEN_CONF" ]; then
     local_conf_generate
