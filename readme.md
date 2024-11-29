@@ -5,7 +5,7 @@ TrustBox is a secure communication edge device by Scalys based on NXP LS1012A pr
 
 This BSP is organized using git submodules. To fetch latest BSP version use command:
 ```
-$ git clone --recursive https://github.com/Scalys/bsp-yocto.git -b dunfell
+$ git clone --recursive https://github.com/Scalys/bsp-yocto.git -b scarthgap
 ```
 
 # Environment
